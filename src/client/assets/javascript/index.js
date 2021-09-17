@@ -84,7 +84,7 @@ async function handleCreateRace() {
     renderAt('#race', renderRaceStartView(race.Track))
   
     // TODO - update the store with the race id
-    store.race_id = race.ID - 1;
+    store.race_id = parseInt(race.ID) - 1;
     // The race has been created, now start the countdown
     // TODO - call the async function runCountdown
     await runCountdown()
@@ -183,7 +183,7 @@ function handleSelectTrack(target) {
 function handleAccelerate() {
 	// TODO - Invoke the API call to accelerate
   try {
-    accelerate(store.player_id)
+    accelerate(store.race_id)
     console.log("accelerate button clicked")
   } catch (error) {
     console.log(error);
@@ -383,6 +383,7 @@ function createRace(player_id, track_id) {
 }
 
 function getRace(id) {
+  id = parseInt(id)
 	// GET request to `${SERVER}/api/races/${id}`
   return fetch(`${SERVER}/api/races/${id}`)
   .then((response) => {
@@ -396,6 +397,7 @@ function getRace(id) {
 }
 
 function startRace(id) {
+  id = parseInt(id)
 	return fetch(`${SERVER}/api/races/${id}/start`, {
 		method: 'POST',
     dataType: 'jsonp',
@@ -405,6 +407,7 @@ function startRace(id) {
 }
 
 function accelerate(id) {
+  id = parseInt(id)
 	// POST request to `${SERVER}/api/races/${id}/accelerate`
 	// options parameter provided as defaultFetchOpts
 	// no body or datatype needed for this request
