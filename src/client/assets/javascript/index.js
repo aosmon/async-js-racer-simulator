@@ -84,7 +84,7 @@ async function handleCreateRace() {
     renderAt('#race', renderRaceStartView(race.Track))
   
     // TODO - update the store with the race id
-    store.race_id = race.ID
+    store.race_id = race.ID - 1;
     // The race has been created, now start the countdown
     // TODO - call the async function runCountdown
     await runCountdown()
@@ -99,24 +99,28 @@ async function handleCreateRace() {
 }
 
 function runRace(raceID) {
-	return new Promise(resolve => {
-	// TODO - use Javascript's built in setInterval method to get race info every 500ms
+	try {
+    return new Promise(resolve => {
+    // TODO - use Javascript's built in setInterval method to get race info every 500ms
+      const raceInterval = setInterval(async () => {
+        const race = await getRace(raceID)
+        // TODO - if the race info status property is "in-progress", update the leaderboard by calling:
+        if(race.status === 'in-progress') {
+          renderAt('#leaderBoard', raceProgress(race.positions))
+        }
 
-	/* 
-		TODO - if the race info status property is "in-progress", update the leaderboard by calling:
-
-		renderAt('#leaderBoard', raceProgress(res.positions))
-	*/
-
-	/* 
-		TODO - if the race info status property is "finished", run the following:
-
-		clearInterval(raceInterval) // to stop the interval from repeating
-		renderAt('#race', resultsView(res.positions)) // to render the results view
-		reslove(res) // resolve the promise
-	*/
-	})
-	// remember to add error handling for the Promise
+        // TODO - if the race info status property is "finished", run the following:
+        if(race.status === 'in-finished') {
+          clearInterval(raceInterval) // to stop the interval from repeating
+          renderAt('#race', resultsView(race.positions)) // to render the results view
+          resolve(race) // resolve the promise
+        }
+      }, 500)
+    })
+  } catch(error) {
+	  // remember to add error handling for the Promise
+		console.log(error);
+	}
 }
 
 async function runCountdown() {
@@ -389,8 +393,17 @@ function startRace(id) {
 		method: 'POST',
 		...defaultFetchOpts(),
 	})
-	.then(res => res.json())
-	.catch(err => console.log("Problem with getRace request::", err))
+  .then((response) => {
+    if (response.ok) {
+      return response.text();
+    } else {
+      throw new Error('Something went wrong');
+    }
+  })
+  .then(data => {
+    return data ? JSON.parse(data) : {}
+  })
+	.catch(err => console.log("Problem with startRace request::", err))
 }
 
 function accelerate(id) {
