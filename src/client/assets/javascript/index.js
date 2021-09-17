@@ -161,7 +161,7 @@ function handleSelectPodRacer(target) {
 	target.classList.add('selected')
 
 	// TODO - save the selected racer to the store
-  store.player_id = parseInt(target.id)
+  store.player_id = target.id
 }
 
 function handleSelectTrack(target) {
@@ -177,7 +177,7 @@ function handleSelectTrack(target) {
 	target.classList.add('selected')
 
 	// TODO - save the selected track id to the store
-	store.track_id = parseInt(target.id)
+	store.track_id = target.id
 }
 
 function handleAccelerate() {
@@ -290,7 +290,7 @@ function resultsView(positions) {
 }
 
 function raceProgress(positions) {
-	let userPlayer = positions.find(e => e.id === store.player_id)
+	let userPlayer = positions.find(e => e.id === parseInt(store.player_id))
 	userPlayer.driver_name += " (you)"
 
 	positions = positions.sort((a, b) => (a.segment > b.segment) ? -1 : 1)
@@ -398,18 +398,9 @@ function getRace(id) {
 function startRace(id) {
 	return fetch(`${SERVER}/api/races/${id}/start`, {
 		method: 'POST',
+    dataType: 'jsonp',
 		...defaultFetchOpts(),
 	})
-  .then((response) => {
-    if (response.ok) {
-      return response.text();
-    } else {
-      throw new Error('Something went wrong');
-    }
-  })
-  .then(data => {
-    return data ? JSON.parse(data) : {}
-  })
 	.catch(err => console.log("Problem with startRace request::", err))
 }
 
@@ -419,6 +410,7 @@ function accelerate(id) {
 	// no body or datatype needed for this request
 	return fetch(`${SERVER}/api/races/${id}/accelerate`, {
 		method: 'POST',
+    dataType: 'jsonp',
 		...defaultFetchOpts(),
 	})
 	.catch(err => console.log("Problem with accelerate request::", err))
