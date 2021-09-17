@@ -14,6 +14,12 @@ The game has three main views:
 
 3. The race results view
 
+
+<img width="750" alt="Udaciracer01" src="https://user-images.githubusercontent.com/26148396/133864154-1d37db17-6f3a-440c-bfb7-5cd77d870d30.png">
+<img width="750" alt="Udaciracer02" src="https://user-images.githubusercontent.com/26148396/133864155-1846ed2f-7f9f-4cd4-853d-750f059f188a.png">
+<img width="750" alt="Udaciracer03" src="https://user-images.githubusercontent.com/26148396/133864157-5f6e61d4-0f11-437d-bc45-fc5215fc4195.png">
+<img width="750" alt="Udaciracer04" src="https://user-images.githubusercontent.com/26148396/133864158-0038a02f-0142-4688-ad3c-96d64dbf2fef.png">
+
 ## Starter Code
 
 We have supplied you with the following:
